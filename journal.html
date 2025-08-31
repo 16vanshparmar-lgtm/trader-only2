@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Trading Journal - TraderOnly</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[var(--primary-color)] text-[var(--text-primary)]">
+    <div id="page-transition-overlay"></div>
+    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-[-1] opacity-0 transition-opacity duration-500"></div>
+    <div class="flex h-screen">
+        <aside id="sidebar" class="bg-[var(--secondary-color)] w-64 p-4 flex-col border-r border-[var(--border-color)] fixed top-0 left-0 h-full z-30 md:flex md:relative md:translate-x-0 -translate-x-full">
+            <div class="flex items-center justify-between gap-2 mb-8"><a href="index.html" class="text-2xl font-bold tracking-tight"><span>Trader</span><span class="text-[var(--accent-color)]">Only</span></a><button id="sidebar-close-btn" class="md:hidden text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><i data-lucide="x"></i></button></div>
+            <nav class="flex-grow"><ul class="space-y-2">
+                <li><a href="index.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-700/50"><i data-lucide="layout-dashboard"></i><span>Home</span></a></li>
+                <li><a href="journal.html" class="flex items-center gap-3 px-3 py-2 rounded-md bg-slate-700/50 text-white font-medium"><i data-lucide="book-open"></i><span>Journal</span></a></li>
+                <li><a href="goals.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-700/50"><i data-lucide="target"></i><span>Goals</span></a></li>
+                <li><a href="accounts.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-700/50"><i data-lucide="landmark"></i><span>Accounts</span></a></li>
+                <li><a href="payouts.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-700/50"><i data-lucide="dollar-sign"></i><span>Payouts</span></a></li>
+                <li><a href="analysis.html" class="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-slate-700/50"><i data-lucide="pie-chart"></i><span>Analysis</span></a></li>
+            </ul></nav>
+        </aside>
+        <div class="flex-1 flex flex-col overflow-hidden">
+             <header class="glass-header sticky top-0 z-20">
+                <div class="flex items-center justify-between md:justify-end h-16 px-6">
+                    <button id="sidebar-open-btn" class="md:hidden text-[var(--text-secondary)] hover:text-[var(--text-primary)]"><i data-lucide="menu"></i></button>
+                    <div class="flex items-center gap-4">
+                        <button id="theme-toggle" class="text-[var(--text-secondary)] hover:text-[var(--accent-color)] transition-colors"><i data-lucide="sun" class="w-5 h-5 hidden" id="theme-icon-light"></i><i data-lucide="moon" class="w-5 h-5" id="theme-icon-dark"></i></button>
+                        <div id="user-menu-button" class="relative cursor-pointer">
+                            <div id="user-avatar" class="h-9 w-9 rounded-full flex items-center justify-center font-bold text-white"></div>
+                            <div id="dropdown-menu" class="hidden absolute right-0 mt-2 w-48 bg-[var(--secondary-color)] border border-[var(--border-color)] rounded-md shadow-lg py-1 z-20">
+                                <span id="welcome-user" class="block px-4 py-2 text-sm text-[var(--text-secondary)]"></span>
+                                <a href="#" id="logout-btn" class="flex items-center gap-2 w-full text-left px-4 py-2 text-sm hover:bg-slate-700/50"><i data-lucide="log-out" class="w-4 h-4"></i><span>Logout</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="flex-1 overflow-y-auto p-6 md:p-8">
+                <div id="main-content" class="opacity-0 translate-y-4 transition-all duration-500">
+                    <div class="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
+                        <h1 class="text-3xl lg:text-4xl font-extrabold">Trading Journal</h1>
+                        <button id="export-journal-csv" class="btn btn-secondary flex items-center gap-2 self-start md:self-center"><i data-lucide="download" class="w-4 h-4"></i><span>Export to CSV</span></button>
+                    </div>
+                    
+                    <!-- Filter Section -->
+                    <div class="premium-card p-4 mb-8">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+                             <div class="md:col-span-1">
+                                <label for="filter-asset" class="text-xs text-[var(--text-secondary)]">Filter by Asset</label>
+                                <input type="text" id="filter-asset" placeholder="e.g., EURUSD" class="w-full text-sm bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label for="filter-outcome" class="text-xs text-[var(--text-secondary)]">Filter by Outcome</label>
+                                <select id="filter-outcome" class="w-full text-sm bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                                    <option value="">All Outcomes</option>
+                                    <option value="win">Wins</option>
+                                    <option value="loss">Losses</option>
+                                    <option value="breakeven">Breakeven</option>
+                                </select>
+                            </div>
+                            <div class="md:col-span-1">
+                                <label for="filter-account" class="text-xs text-[var(--text-secondary)]">Filter by Account</label>
+                                <select id="filter-account" class="w-full text-sm bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                                    <option value="">All Accounts</option>
+                                </select>
+                            </div>
+                             <div class="md:col-span-1 self-end">
+                                <button id="clear-filters-btn" class="w-full btn btn-secondary flex items-center justify-center gap-2 text-sm"><i data-lucide="rotate-ccw" class="w-4 h-4"></i><span>Clear Filters</span></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form id="journal-form" class="premium-card p-6 mb-8">
+                        <h3 class="text-xl font-semibold mb-4 border-b border-[var(--border-color)] pb-3">Add New Trade</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                            <select id="trade-account" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"><option value="">-- Select Account --</option></select>
+                            <input type="text" id="trade-asset" placeholder="Asset (e.g., AAPL)" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <select id="trade-position" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"><option value="">-- Position --</option><option value="Long">Long</option><option value="Short">Short</option></select>
+                            <input type="date" id="trade-date" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                            <input type="number" id="trade-entry" placeholder="Entry Price" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="time" id="trade-entry-time" title="Entry Time" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="number" id="trade-exit" placeholder="Exit Price" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="time" id="trade-exit-time" title="Exit Time" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 mb-4">
+                            <input type="number" id="trade-sl" placeholder="Stop Loss Price" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="number" id="trade-tp" placeholder="Take Profit Price" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                             <input type="number" id="trade-lot-size" placeholder="Lot Size" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="number" id="trade-risk" placeholder="% Risked" step="any" class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <select id="trade-followed-rules" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"><option value="">-- Followed Rules? --</option><option value="Yes">Yes</option><option value="No">No</option></select>
+                        </div>
+                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <input type="number" id="trade-balance" placeholder="Closing Account Balance $" step="any" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                            <input type="number" id="trade-pnl" placeholder="Profit/Loss $" step="any" required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                        </div>
+                        <textarea id="trade-rationale" placeholder="Trade rationale, thoughts, and lessons learned..." required class="w-full bg-slate-800/50 border border-[var(--border-color)] rounded-md px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]"></textarea>
+                        <div class="flex items-center gap-4 mt-4">
+                            <button type="submit" class="btn btn-primary">Log Trade</button>
+                            <label class="btn btn-secondary cursor-pointer flex items-center gap-2">
+                                <i data-lucide="image-plus" class="w-4 h-4"></i>
+                                <span id="screenshot-label">Add Screenshot</span>
+                                <input type="file" id="trade-screenshot" class="hidden" accept="image/*">
+                            </label>
+                        </div>
+                    </form>
+                    <div class="premium-card overflow-x-auto">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-[var(--text-secondary)] uppercase bg-slate-800/50"><tr class="border-b border-[var(--border-color)]">
+                                <th scope="col" class="px-6 py-4">Date</th><th scope="col" class="px-6 py-4">Asset</th>
+                                <th scope="col" class="px-6 py-4">Position</th><th scope="col" class="px-6 py-4">P/L</th>
+                                <th scope="col" class="px-6 py-4">Rules Followed</th><th scope="col" class="px-6 py-4 text-center">Details</th>
+                                <th scope="col" class="px-6 py-4 text-right">Actions</th>
+                            </tr></thead>
+                            <tbody id="journal-table-body"></tbody>
+                        </table>
+                         <div id="journal-empty-state" class="hidden text-center py-16 px-6">
+                            <svg class="mx-auto h-24 w-24 text-slate-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+                            <h3 class="mt-4 text-xl font-bold">No Trades Logged Yet</h3>
+                            <p class="text-[var(--text-secondary)] mt-2">Ready to log your first trade? Use the form above to get started.</p>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Screenshot Modal -->
+    <div id="screenshot-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-[var(--secondary-color)] rounded-lg shadow-xl max-w-4xl max-h-[90vh] w-full flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-[var(--border-color)]">
+                <h3 class="font-semibold">Trade Screenshot</h3>
+                <button id="modal-close-btn" class="text-[var(--text-secondary)] hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <div class="p-4 overflow-auto">
+                <img id="modal-image" src="" alt="Trade Screenshot" class="max-w-full h-auto mx-auto rounded">
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.fog.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

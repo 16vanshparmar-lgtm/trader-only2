@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Login - TraderOnly</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏆</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[var(--primary-color)]">
+    <div id="page-transition-overlay"></div>
+    <div id="vanta-bg" class="fixed top-0 left-0 w-full h-full z-[-1] opacity-0 transition-opacity duration-500"></div>
+    
+    <main class="flex items-center justify-center min-h-screen p-4">
+        <div class="login-container w-full max-w-md p-8 space-y-8 bg-[var(--secondary-color)]/50 backdrop-blur-xl border border-[var(--border-color)] rounded-xl shadow-2xl transition-all duration-500">
+            <div class="text-center">
+                 <h1 class="text-4xl font-extrabold text-[var(--text-primary)] tracking-tight">
+                    <span class="text-white">Trader</span><span class="text-[var(--accent-color)]">Only</span>
+                </h1>
+                <p class="text-[var(--text-secondary)] mt-2">Login or create an account to continue</p>
+            </div>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <input type="text" id="username" placeholder="Username" required class="w-full px-4 py-3 bg-slate-800/50 border border-[var(--border-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                </div>
+                <div>
+                    <input type="password" id="password" placeholder="Password" required class="w-full px-4 py-3 bg-slate-800/50 border border-[var(--border-color)] rounded-md focus:outline-none focus:ring-2 focus:ring-[var(--accent-color)]">
+                </div>
+                <button type="submit" class="w-full btn btn-primary text-base py-3">Login / Register</button>
+            </form>
+        </div>
+    </main>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
